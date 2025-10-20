@@ -7,3 +7,5 @@ def read_data(path):
 
 df = read_data('data/ai4i2020.csv')
 print(df.info())
+
+#fix nulls
