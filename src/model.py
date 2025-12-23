@@ -33,29 +33,6 @@ class MLflowProductionTrainer:
         
         # Enable autologging
         mlflow.sklearn.autolog()
-        
-    def set_up_aws(self):  
-        # Set environment variables for boto3
-        os.environ['AWS_ACCESS_KEY_ID'] = self.config['aws']['access_key_id']
-        os.environ['AWS_SECRET_ACCESS_KEY'] = self.config['aws']['secret_access_key']
-        os.environ['AWS_DEFAULT_REGION'] = self.config['aws']['region']
-        
-        # Test S3 connection
-        try:
-            s3 = boto3.client('s3')
-            response = s3.list_buckets()
-            bucket_names = [bucket['Name'] for bucket in response['Buckets']]
-            print(f"✅ AWS S3 connection successful. Available buckets: {len(bucket_names)}")
-            
-            # Check if our target bucket exists
-            target_bucket = self.config['aws']['s3_bucket']
-            if target_bucket in bucket_names:
-                print(f"✅ Target bucket '{target_bucket}' exists")
-            else:
-                print(f"⚠️  Target bucket '{target_bucket}' not found. It will be created automatically.")
-                
-        except Exception as e:
-            print(f"❌ AWS S3 connection failed: {e}")
   
         
     # def building_model(): 
