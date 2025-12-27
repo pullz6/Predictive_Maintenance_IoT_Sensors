@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np 
+import logging 
 from sklearn.preprocessing import LabelEncoder
 
 def read_data(path): 
