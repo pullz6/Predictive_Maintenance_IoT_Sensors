@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np 
+from sklearn.preprocessing import LabelEncoder
 
 def read_data(path): 
     df = pd.read_csv(path)
@@ -9,47 +10,53 @@ def fill_nulls(df):
     df = df.fillna(df.mean(numeric_only=True))
     return df
 
-def data_check(df): 
-    iot_rules = {
-    'UDI': {'required': True, 'dtype': 'int64'},
-    'Product ID': {'required': True, 'dtype': 'object'},
-    'Type': {'required': True, 'dtype': 'object'},
-    'Air temperature [K]': {'required': True, 'dtype': 'float64'},
-    'Process temperature [K]': {'required': True, 'dtype': 'float64'},
-    'Rotational speed [rpm]': {'required': True, 'dtype': 'int64'},
-    'Torque [Nm]': {'required': True, 'dtype': 'float64'},
-    'Tool wear [min]': {'required': True, 'dtype': 'int64'},
-    'Machine failure': {'required': True, 'dtype': 'int64'},
-    'TWF': {'required': True, 'dtype': 'int64'},
-    'HDF': {'required': True, 'dtype': 'int64'},
-    'PWF': {'required': True, 'dtype': 'int64'},
-    'OSF': {'required': True, 'dtype': 'int64'},
-    'RNF': {'required': True, 'dtype': 'int64'}}
-    
-    validation_results = {}
-    for column, rule in iot_rules.items():
-        if column not in df.columns:
-            if rule.get('required', False):
-                validation_results[column] = f"REQUIRED column missing"
-            continue
-            
-        column_errors = []
+def clean_column_names(df):
+    """Remove invalid characters from column names"""
+    df_clean = df.copy()
+    df_clean.columns = [col.replace('[', '').replace(']', '').replace('<', '')
+                       for col in df_clean.columns]
+    return df_clean
+
+def prepare_features_and_target(df):
+    """
+    Features: Sensor data and operational parameters
+    Target: Machine failure (binary)
+    """
+
+    # FEATURES - What causes failures
+    feature_columns = [
+        'Air temperature K', 'Process temperature K',
+        'Rotational speed rpm', 'Torque Nm',
+        'Tool wear min', 'Type'
+    ]
+
+    X = df[feature_columns].copy()
+
+    # Feature engineering
+    X['temp_difference'] = X['Process temperature K'] - X['Air temperature K']
+    X['power_estimate'] = (X['Torque Nm'] * X['Rotational speed rpm']) / 9549
+    X['wear_rate'] = X['Tool wear min'] / (X['Rotational speed rpm'] + 1)
+
+    # Encode categorical
+    le = LabelEncoder()
+    X['Type_encoded'] = le.fit_transform(X['Type'])
+
+    # Drop original categorical column
+    X = X.drop(['Type'], axis=1)
+
+    # TARGET - What we want to predict
+    y = df['Machine failure']
+
+    # Verify target is binary
+    print("Target verification:")
+    print(f"Unique values: {y.unique()}")
+    print(f"Value counts:\n{y.value_counts()}")
+
+    return X, y
         
-        # Data type validation
-        if 'dtype' in rule:
-            if rule['dtype'] == 'numeric' and not np.issubdtype(df[column].dtype, np.number):
-                column_errors.append("Should be numeric")
-            elif rule['dtype'] == 'categorical' and not df[column].dtype == 'object':
-                column_errors.append("Should be categorical")
-                
-        if column_errors:
-            validation_results[column] = column_errors
-    
-    return validation_results
-        
-def run_prep ():
+if __name__ == "__main__":
     df = read_data('data/ai4i2020.csv')
-    validation_results = data_check(df)
-    print(df.info())
-    print(validation_results)
-    return df
+    cleaned_df = clean_column_names(df)
+    X,y = prepare_features_and_target(cleaned_df)
+    X.to_parquet("data/processed/X.parquet") 
+    y.to_parquet("data/processed/y.parquet")
