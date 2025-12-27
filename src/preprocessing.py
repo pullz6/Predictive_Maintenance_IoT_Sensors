@@ -58,5 +58,7 @@ if __name__ == "__main__":
     df = read_data('data/ai4i2020.csv')
     cleaned_df = clean_column_names(df)
     X,y = prepare_features_and_target(cleaned_df)
+    #X is a dataframe with all the features for training, we can directly convert it to a parquet
     X.to_parquet("data/processed/X.parquet") 
-    y.to_parquet("data/processed/y.parquet")
+    #Y is a series with all the outputs, we have to convert it to a DataFrame by treating the Series as a single column in order to convert it to a parquet
+    y.to_frame().to_parquet("data/processed/y.parquet")
