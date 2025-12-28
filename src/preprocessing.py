@@ -3,16 +3,23 @@ import numpy as np
 import logging 
 from sklearn.preprocessing import LabelEncoder
 
+# Basic setup
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
 def read_data(path): 
+    logger.info("Loading Data")
     df = pd.read_csv(path)
     return df
 
 def fill_nulls(df): 
     df = df.fillna(df.mean(numeric_only=True))
+    logger.info("Filling the nulls")
     return df
 
 def clean_column_names(df):
     """Remove invalid characters from column names"""
+    logger.info("Cleaning the column names")
     df_clean = df.copy()
     df_clean.columns = [col.replace('[', '').replace(']', '').replace('<', '')
                        for col in df_clean.columns]
@@ -23,7 +30,7 @@ def prepare_features_and_target(df):
     Features: Sensor data and operational parameters
     Target: Machine failure (binary)
     """
-
+    logger.info("Preprocessing the dataframe")
     # FEATURES - What causes failures
     feature_columns = [
         'Air temperature K', 'Process temperature K',
@@ -47,12 +54,8 @@ def prepare_features_and_target(df):
 
     # TARGET - What we want to predict
     y = df['Machine failure']
-
-    # Verify target is binary
-    print("Target verification:")
-    print(f"Unique values: {y.unique()}")
-    print(f"Value counts:\n{y.value_counts()}")
-
+    
+    logger.info("Exporting X, y into parquets")
     return X, y
         
 if __name__ == "__main__":
