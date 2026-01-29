@@ -56,9 +56,14 @@ class MLflowProductionTrainer:
         y_pred = model.predict(X_test)
         model_acc = accuracy_score(y_test, y_pred)
         return model_acc
-      
+    
     def run_mlops_pipeline(self):
         """Complete MLOps pipeline"""
+        logger.info("Starting MLOps pipeline...")
+        model = self.training_model()
+        accuracy = self.evaluating_model()
+            
+ """    def run_mlops_pipeline(self):
         logger.info("Starting MLOps pipeline...")
         try:
             exp_name = self.config['mlflow']['experiment_name']
@@ -74,7 +79,7 @@ class MLflowProductionTrainer:
             )
             accuracy = self.evaluating_model()
             mlflow.log_metric("accuracy", accuracy)
- 
+  """
 
 if __name__ == "__main__": 
     # Configuration of the class 
