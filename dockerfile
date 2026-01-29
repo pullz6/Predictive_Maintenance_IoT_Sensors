@@ -1,3 +1,5 @@
+FROM python:3.12.11
+
 WORKDIR /src
 
 COPY requirements.txt .
