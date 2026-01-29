@@ -20,19 +20,13 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 
 warnings.filterwarnings('ignore')
-# Configure logging
+# Configure loggin.  
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 class MLflowProductionTrainer:
     def __init__(self, config: Dict[str, Any]):
         self.config = config 
-  
-    def building_model(self):
-        logger.info("Building Model")
-        model = XGBClassifier()
-        logger.info("Building Model - Success")
-        return model
     
     def load_split_data(self): 
         logger.info("Reading data")
@@ -41,6 +35,12 @@ class MLflowProductionTrainer:
         logger.info("Reading data - Success")
         X_train, X_test,y_train, y_test = train_test_split(X, y, test_size=0.3)
         return X_train, X_test,y_train, y_test
+    
+    def building_model(self):
+        logger.info("Building Model")
+        model = XGBClassifier()
+        logger.info("Building Model - Success")
+        return model
     
     def training_model(self): 
         X_train, X_test,y_train, y_test = self.load_split_data()
@@ -74,7 +74,7 @@ class MLflowProductionTrainer:
             )
             accuracy = self.evaluating_model()
             mlflow.log_metric("accuracy", accuracy)
-
+ 
 
 if __name__ == "__main__": 
     # Configuration of the class 
