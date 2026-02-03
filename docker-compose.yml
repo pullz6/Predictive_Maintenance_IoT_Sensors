@@ -1,8 +1,9 @@
-version : 3.8
+version : '3.8'
 
-services : 
+services: 
   ml-trainer: 
     build : .
-    container : predictive-ml-training
+    container_name: predictive-ml-training
     volumes : 
       - ./data:/app/data
+      - ./models:/app/models
