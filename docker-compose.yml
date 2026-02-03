@@ -4,5 +4,5 @@ services :
   ml-trainer: 
     build : .
     container : predictive-ml-training
-    
-    
+    volumes : 
+      - ./data:/app/data
