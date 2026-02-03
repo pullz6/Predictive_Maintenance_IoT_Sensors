@@ -79,7 +79,7 @@ class ml_ops_pipeline:
     
     def save_model(self,model): 
         logger.info("Saving model")
-        with open('model.pkl', 'wb') as f:
+        with open('models/model.pkl', 'wb') as f:
             pickle.dump(model, f)
         logger.info("Save model - Success")
     
