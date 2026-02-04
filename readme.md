@@ -31,9 +31,20 @@ Training Service: Handles model training and evaluation
 
 
 ## Project Structure
-
 bash
-.
+Copy code
+project-root/
+│
+├── src/                 # Source files
+├── data/                # Sample datasets
+├── notebooks/           # Jupyter notebooks
+├── tests/               # Unit and integration tests
+├── README.md            # Project documentation
+└── requirements.txt     # Project dependencies
+
+
+project-root/
+│
 ├── Dockerfile     # Dockerfile for training service
 ├── docker-compose.yml # Service orchestration
 ├── requirements.txt # Python dependencies
