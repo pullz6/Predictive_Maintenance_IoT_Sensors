@@ -32,7 +32,8 @@ Training Service: Handles model training and evaluation
 
 ## Project Structure
 
-
+bash
+.
 ├── Dockerfile     # Dockerfile for training service
 ├── docker-compose.yml # Service orchestration
 ├── requirements.txt # Python dependencies
