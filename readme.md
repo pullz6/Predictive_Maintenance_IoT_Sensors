@@ -64,11 +64,12 @@ Git
 ## Quick Start with Docker
 ```
 1. Clone the Repository
-bash
+
 git clone <repository-url>
 cd machine-failure-prediction
+
 2. Build and Run with Docker Compose
-bash
+
 # Build and start all services
 docker-compose up --build
 
