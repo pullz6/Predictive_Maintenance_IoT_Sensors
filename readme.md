@@ -61,7 +61,8 @@ Python 3.8+ (for local development)
 
 Git
 
-Quick Start with Docker
+## Quick Start with Docker
+```
 1. Clone the Repository
 bash
 git clone <repository-url>
@@ -79,3 +80,4 @@ docker-compose logs -f
 
 # Stop services
 docker-compose down
+```
