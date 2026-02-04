@@ -31,33 +31,26 @@ Training Service: Handles model training and evaluation
 
 
 ## Project Structure
-bash
-Copy code
+text
 project-root/
 │
-├── src/                 # Source files
-├── data/                # Sample datasets
-├── notebooks/           # Jupyter notebooks
-├── tests/               # Unit and integration tests
-├── README.md            # Project documentation
-└── requirements.txt     # Project dependencies
-
-
-project-root/
+├── Dockerfile              # Dockerfile for training service
+├── docker-compose.yml      # Service orchestration
+├── requirements.txt        # Python dependencies
+├── initial_script.ipynb    # Initial exploratory notebook
 │
-├── Dockerfile     # Dockerfile for training service
-├── docker-compose.yml # Service orchestration
-├── requirements.txt # Python dependencies
-├── data/ # file for raw data and processed data
-    ├── processed 
-      ├── X.parquet 
-      ├── Y.parquet
-├── models/ # storing models
-├── src/                   # Training code and data
-│   ├── model.py            # Model training script
-│   ├── preprocessing.py    # Data preprocessing
-└── initial_srcipt.ipynb # initial notebook
-
+├── data/                   # Data directory
+│   ├── raw/               # Raw data files
+│   └── processed/         # Processed data
+│       ├── X.parquet
+│       └── y.parquet
+│
+├── models/                 # Trained model files
+│
+└── src/                    # Source code
+    ├── __init__.py
+    ├── model.py           # Model training script
+    └── preprocessing.py   # Data preprocessing
 ## Prerequisites
 Docker Engine 20.10+
 
