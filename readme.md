@@ -31,7 +31,7 @@ Training Service: Handles model training and evaluation
 
 
 ## Project Structure
-text
+```
 project-root/
 │
 ├── Dockerfile              # Dockerfile for training service
@@ -51,6 +51,7 @@ project-root/
     ├── __init__.py
     ├── model.py           # Model training script
     └── preprocessing.py   # Data preprocessing
+```
 ## Prerequisites
 Docker Engine 20.10+
 
